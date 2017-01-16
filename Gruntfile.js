@@ -167,25 +167,24 @@ module.exports = function(grunt){
         }
         
         
-        // Process dev dependency components
-        for(let dep in manifest[project].bower.devDependencies) {
-            
+        // Process dev dependency components        
+        Object.keys(manifest[project].bower.devDependencies).reverse().forEach(dep => {
+           
             let dep_path    = grunt.file.expand('assets/' + dep + '/{bower,package}.json').shift(),
                 dep_pkg     = dep_path ? ( manifest[project].bower.overrides[dep] || grunt.file.readJSON(dep_path) ) : { main : [] },
                 mainFiles   = typeof dep_pkg.main === 'string' ? [dep_pkg.main] : dep_pkg.main;
-                        
+
             mainFiles.reverse().forEach(asset => {
-                
+
                 let ext = path.extname(asset).slice(1);
-                                
+
                 manifest[project].assets[ext] = manifest[project].assets[ext] || [];
-                
+
                 manifest[project].assets[ext].unshift(path.dirname(dep_path) + '/' + asset);
-                
+
             });
             
-        }
-                
+        });        
         
         // Add SASS support if enabled
         if(manifest[project].bower.devserver.sass !== false) {            
