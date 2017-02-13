@@ -126,12 +126,12 @@ module.exports = function(grunt){
     require('load-grunt-tasks')(grunt);
         
     grunt.option('gruntfile', __filename);
-    
+        
     if(!project)
         console.error('No project specified or found. Please specify the name of the project using: --project=__NAME__') || process.exit();
     
-    let local_bower = grunt.file.expand(devserver_root + '/' + project + '/public_html/*/themes/' + theme + '/bower.json').shift();
-        
+    let local_bower = grunt.file.expand({ nocase  : true }, devserver_root + '/' + project + '/public_html/*/themes/' + theme + '/bower.json').shift();
+            
     // Setup project details and prepare project tasks
     if( local_bower ) {
         
@@ -326,8 +326,11 @@ module.exports = function(grunt){
         }
         
         
-    } else
-        console.error('Project: ' + project + ' doesn\'t exist');
+    } else {
+        console.error('Project: ' + project + ' doesn\'t exist or the bower.json file is missing.');
+        process.exit();
+    }
+        
 
     tasks.watch['manifest'] = {
         files   : 'manifest.json',
