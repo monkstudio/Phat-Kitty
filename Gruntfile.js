@@ -120,7 +120,7 @@ module.exports = function(grunt){
             }
         },
         project     = grunt.option('project') || 'base',
-        theme       = grunt.option('theme') || 'monk*';
+        theme       = grunt.option('theme') || '{' + project + ',monk*}';
 
     
     require('load-grunt-tasks')(grunt);
